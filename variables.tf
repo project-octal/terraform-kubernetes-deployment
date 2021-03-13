@@ -103,17 +103,19 @@ variable "config_map_volumes" {
 ####################
 variable "containers" {
   type = map(object({
-    image_repository      = string,
-    image_name            = string,
-    image_tag             = optional(string),
-    image_pull_policy     = optional(string),
-    is_init               = optional(bool),
-    cpu_request           = optional(string),
-    memory_request        = optional(string),
-    cpu_limit             = optional(string),
-    memory_limit          = optional(string),
-    command               = optional(string),
-    environment_variables = optional(map(string)),
+    image_repository                = string,
+    image_name                      = string,
+    image_tag                       = optional(string),
+    image_pull_policy               = optional(string),
+    is_init                         = optional(bool),
+    cpu_request                     = optional(string),
+    memory_request                  = optional(string),
+    cpu_limit                       = optional(string),
+    memory_limit                    = optional(string),
+    command                         = optional(string),
+    simple_environment_variables    = optional(map(string)),
+    secret_environment_variables    = optional(map(object({ name = string, key = string }))),
+    configmap_environment_variables = optional(map(object({ name = string, key = string }))),
     # TODO: Add mapped_environment_variables for variable mapping support
     ports = optional(list(object({
       name           = optional(string),

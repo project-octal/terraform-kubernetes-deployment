@@ -138,12 +138,40 @@ resource "kubernetes_deployment" "deployment" {
             image_pull_policy = container.value["image_pull_policy"]
             command           = container.value["command"]
 
-            ## Environment Variables ###
+            ## Simple Environment Variables ###
             dynamic "env" {
-              for_each = container.value["environment_variables"]
+              for_each = container.value["simple_environment_variables"]
               content {
                 name  = env.key
                 value = env.value
+              }
+            }
+
+            ## Secret Environment Variables ###
+            dynamic "env" {
+              for_each = container.value["secret_environment_variables"]
+              content {
+                name = env.key
+                value_from {
+                  secret_key_ref {
+                    name = env.value["name"]
+                    key  = env.value["key"]
+                  }
+                }
+              }
+            }
+
+            ## Configmap Environment Variables ###
+            dynamic "env" {
+              for_each = container.value["configmap_environment_variables"]
+              content {
+                name = env.key
+                value_from {
+                  config_map_key_ref {
+                    name = env.value["name"]
+                    key  = env.value["key"]
+                  }
+                }
               }
             }
 
