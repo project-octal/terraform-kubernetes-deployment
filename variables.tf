@@ -119,10 +119,10 @@ variable "containers" {
     configmap_environment_variables = optional(map(object({ name = string, key = string }))),
     # TODO: Add mapped_environment_variables for variable mapping support
     ports = optional(list(object({
-      name           = string, # optional
-      protocol       = string, # optional
-      host_ip        = string, # optional
-      host_port      = number, # optional
+      name           = optional(string), # optional
+      protocol       = optional(string), # optional
+      host_ip        = optional(string), # optional
+      host_port      = optional(number), # optional
       container_port = number
     }))),
     http_get_liveness_probe = optional(list(object({
