@@ -11,14 +11,18 @@ resource "kubernetes_deployment" "deployment" {
   spec {
     replicas = var.replicas
     selector {
-      match_labels = {
-        "app.kubernetes.io/name" = var.name
-      }
+      match_labels = merge({
+        "app.kubernetes.io/name"      = var.name,
+        "app.kubernetes.io/component" = var.component,
+        "app.kubernetes.io/part-of"   = var.part_of
+      }, var.labels)
     }
     template {
       metadata {
         labels = merge({
-          "app.kubernetes.io/name" = var.name
+          "app.kubernetes.io/name"      = var.name,
+          "app.kubernetes.io/component" = var.component,
+          "app.kubernetes.io/part-of"   = var.part_of
         }, var.labels)
       }
       spec {
