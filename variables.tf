@@ -102,7 +102,8 @@ variable "config_map_volumes" {
 ## Pod Containers ##
 ####################
 variable "containers" {
-  type = map(object({
+  type = object({
+    name                            = optional(string),
     image_repository                = string,
     image_name                      = string,
     image_tag                       = optional(string),
@@ -136,7 +137,7 @@ variable "containers" {
       initial_delay_seconds = optional(number),
       period_seconds        = optional(number)
     })))
-  }))
+  })
   description = ""
   default     = {}
 }

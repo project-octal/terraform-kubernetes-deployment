@@ -48,10 +48,10 @@ resource "kubernetes_deployment" "deployment" {
           for_each = {
             for key, value in var.containers :
             key => value
-            if value.is_init == false
+            if value.is_init == true
           }
           content {
-            name              = init_container.key
+            name              = init_container.value["name"]
             image             = "${init_container.value["image_repository"]}/${init_container.value["image_name"]}:${init_container.value["image_tag"]}"
             image_pull_policy = init_container.value["image_pull_policy"]
             command           = init_container.value["command"]
@@ -161,7 +161,7 @@ resource "kubernetes_deployment" "deployment" {
             if value.is_init == false
           }
           content {
-            name              = container.key
+            name              = container.value["name"]
             image             = "${container.value["image_repository"]}/${container.value["image_name"]}:${container.value["image_tag"]}"
             image_pull_policy = container.value["image_pull_policy"]
             command           = container.value["command"]
