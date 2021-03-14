@@ -46,7 +46,7 @@ resource "kubernetes_deployment" "deployment" {
         ### Container ###
         dynamic "init_container" {
           for_each = {
-            for key, value in local.containers :
+            for key, value in var.containers :
             key => value
             if value["is_init"] == true
           }
@@ -156,7 +156,7 @@ resource "kubernetes_deployment" "deployment" {
         ### Container ###
         dynamic "container" {
           for_each = {
-            for key, value in local.containers :
+            for key, value in var.containers :
             key => value
             if value["is_init"] == false
           }
