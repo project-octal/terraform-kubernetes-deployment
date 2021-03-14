@@ -113,7 +113,7 @@ variable "containers" {
     memory_request                  = optional(string),
     cpu_limit                       = optional(string),
     memory_limit                    = optional(string),
-    command                         = optional(string),
+    command                         = optional(list(string)),
     simple_environment_variables    = optional(map(string)),
     secret_environment_variables    = optional(map(object({ name = string, key = string }))),
     configmap_environment_variables = optional(map(object({ name = string, key = string }))),
