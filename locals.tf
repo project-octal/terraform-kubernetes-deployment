@@ -1,6 +1,6 @@
 locals {
   deployment_volumes = merge(var.empty_dir_volumes, var.secret_volumes, var.config_map_volumes)
-  containers = defaults(var.containers, {
+  containers = defaults(var.containers.*, {
     image_tag                       = "latest"
     image_pull_policy               = "IfNotPresent"
     is_init                         = false
