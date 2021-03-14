@@ -58,16 +58,44 @@ resource "kubernetes_deployment" "deployment" {
 
             ## Environment Variables ###
             dynamic "env" {
-              for_each = init_container.value["environment_variables"]
+              for_each = init_container.value["environment_variables"] == null ? [] : init_container.value["environment_variables"]
               content {
                 name  = env.key
                 value = env.value
               }
             }
 
+            ## Secret Environment Variables ###
+            dynamic "env" {
+              for_each = init_container.value["secret_environment_variables"] == null ? [] : init_container.value["secret_environment_variables"]
+              content {
+                name = env.key
+                value_from {
+                  secret_key_ref {
+                    name = env.value["name"]
+                    key  = env.value["key"]
+                  }
+                }
+              }
+            }
+
+            ## Configmap Environment Variables ###
+            dynamic "env" {
+              for_each = init_container.value["configmap_environment_variables"] == null ? [] : init_container.value["configmap_environment_variables"]
+              content {
+                name = env.key
+                value_from {
+                  config_map_key_ref {
+                    name = env.value["name"]
+                    key  = env.value["key"]
+                  }
+                }
+              }
+            }
+
             ## Container Ports ##
             dynamic "port" {
-              for_each = init_container.value["ports"]
+              for_each = init_container.value["ports"] == null ? [] : init_container.value["ports"]
               content {
                 name           = port.value["name"]
                 protocol       = port.value["protocol"]
@@ -91,7 +119,7 @@ resource "kubernetes_deployment" "deployment" {
 
             ## Livelness and Rediness Probes ##
             dynamic "liveness_probe" {
-              for_each = init_container.value["http_get_liveness_probe"]
+              for_each = init_container.value["http_get_liveness_probe"] == null ? [] : init_container.value["http_get_liveness_probe"]
               content {
                 http_get {
                   path = liveness_probe.value["path"]
@@ -102,7 +130,7 @@ resource "kubernetes_deployment" "deployment" {
               }
             }
             dynamic "readiness_probe" {
-              for_each = init_container.value["http_get_readiness_probe"]
+              for_each = init_container.value["http_get_readiness_probe"] == null ? [] : init_container.value["http_get_readiness_probe"]
               content {
                 http_get {
                   path = readiness_probe.value["path"]
@@ -140,7 +168,7 @@ resource "kubernetes_deployment" "deployment" {
 
             ## Simple Environment Variables ###
             dynamic "env" {
-              for_each = container.value["simple_environment_variables"]
+              for_each = container.value["simple_environment_variables"] == null ? [] : container.value["simple_environment_variables"]
               content {
                 name  = env.key
                 value = env.value
@@ -149,7 +177,7 @@ resource "kubernetes_deployment" "deployment" {
 
             ## Secret Environment Variables ###
             dynamic "env" {
-              for_each = container.value["secret_environment_variables"]
+              for_each = container.value["secret_environment_variables"] == null ? [] : container.value["secret_environment_variables"]
               content {
                 name = env.key
                 value_from {
@@ -163,7 +191,7 @@ resource "kubernetes_deployment" "deployment" {
 
             ## Configmap Environment Variables ###
             dynamic "env" {
-              for_each = container.value["configmap_environment_variables"]
+              for_each = container.value["configmap_environment_variables"] == null ? [] : container.value["configmap_environment_variables"]
               content {
                 name = env.key
                 value_from {
@@ -177,7 +205,7 @@ resource "kubernetes_deployment" "deployment" {
 
             ## Container Ports ##
             dynamic "port" {
-              for_each = container.value["ports"]
+              for_each = container.value["ports"] == null ? [] : container.value["ports"]
               content {
                 name           = port.value["name"]
                 protocol       = port.value["protocol"]
@@ -201,7 +229,7 @@ resource "kubernetes_deployment" "deployment" {
 
             ## Livelness and Rediness Probes ##
             dynamic "liveness_probe" {
-              for_each = container.value["http_get_liveness_probe"]
+              for_each = container.value["http_get_liveness_probe"] == null ? [] : container.value["http_get_liveness_probe"]
               content {
                 http_get {
                   path = liveness_probe.value["path"]
@@ -212,7 +240,7 @@ resource "kubernetes_deployment" "deployment" {
               }
             }
             dynamic "readiness_probe" {
-              for_each = container.value["http_get_readiness_probe"]
+              for_each = container.value["http_get_readiness_probe"] == null ? [] : container.value["http_get_readiness_probe"]
               content {
                 http_get {
                   path = readiness_probe.value["path"]
