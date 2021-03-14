@@ -58,7 +58,7 @@ resource "kubernetes_deployment" "deployment" {
 
             ## Environment Variables ###
             dynamic "env" {
-              for_each = init_container.value["environment_variables"] == null ? [] : init_container.value["environment_variables"]
+              for_each = init_container.value["environment_variables"] == null ? {} : init_container.value["environment_variables"]
               content {
                 name  = env.key
                 value = env.value
@@ -67,7 +67,7 @@ resource "kubernetes_deployment" "deployment" {
 
             ## Secret Environment Variables ###
             dynamic "env" {
-              for_each = init_container.value["secret_environment_variables"] == null ? [] : init_container.value["secret_environment_variables"]
+              for_each = init_container.value["secret_environment_variables"] == null ? {} : init_container.value["secret_environment_variables"]
               content {
                 name = env.key
                 value_from {
@@ -81,7 +81,7 @@ resource "kubernetes_deployment" "deployment" {
 
             ## Configmap Environment Variables ###
             dynamic "env" {
-              for_each = init_container.value["configmap_environment_variables"] == null ? [] : init_container.value["configmap_environment_variables"]
+              for_each = init_container.value["configmap_environment_variables"] == null ? {} : init_container.value["configmap_environment_variables"]
               content {
                 name = env.key
                 value_from {
@@ -168,7 +168,7 @@ resource "kubernetes_deployment" "deployment" {
 
             ## Simple Environment Variables ###
             dynamic "env" {
-              for_each = container.value["simple_environment_variables"] == null ? [] : container.value["simple_environment_variables"]
+              for_each = container.value["simple_environment_variables"] == null ? {} : container.value["simple_environment_variables"]
               content {
                 name  = env.key
                 value = env.value
@@ -177,7 +177,7 @@ resource "kubernetes_deployment" "deployment" {
 
             ## Secret Environment Variables ###
             dynamic "env" {
-              for_each = container.value["secret_environment_variables"] == null ? [] : container.value["secret_environment_variables"]
+              for_each = container.value["secret_environment_variables"] == null ? {} : container.value["secret_environment_variables"]
               content {
                 name = env.key
                 value_from {
@@ -191,7 +191,7 @@ resource "kubernetes_deployment" "deployment" {
 
             ## Configmap Environment Variables ###
             dynamic "env" {
-              for_each = container.value["configmap_environment_variables"] == null ? [] : container.value["configmap_environment_variables"]
+              for_each = container.value["configmap_environment_variables"] == null ? {} : container.value["configmap_environment_variables"]
               content {
                 name = env.key
                 value_from {
