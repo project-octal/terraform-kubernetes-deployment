@@ -102,7 +102,7 @@ variable "config_map_volumes" {
 ## Pod Containers ##
 ####################
 variable "containers" {
-  type = object({
+  type = list(object({
     name                            = optional(string),
     image_repository                = string,
     image_name                      = string,
@@ -137,7 +137,7 @@ variable "containers" {
       initial_delay_seconds = optional(number),
       period_seconds        = optional(number)
     })))
-  })
+  }))
   description = ""
-  default     = {}
+  default     = []
 }
